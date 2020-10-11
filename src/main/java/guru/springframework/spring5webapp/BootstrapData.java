@@ -6,6 +6,8 @@ import guru.springframework.spring5webapp.domain.Publisher;
 import guru.springframework.spring5webapp.repositories.AuthorRepository;
 import guru.springframework.spring5webapp.repositories.BookRepository;
 import guru.springframework.spring5webapp.repositories.PublisherRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,8 @@ public class BootstrapData implements CommandLineRunner {
     private final BookRepository bookRepository;
     private final PublisherRepository publisherRepository;
 
+    private final Logger logger = LoggerFactory.getLogger(BootstrapData.class);
+
     public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
@@ -24,11 +28,11 @@ public class BootstrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Started in Bootstrap");
+        logger.info("Started in Bootstrap");
 
         Publisher dtv = new Publisher("DTV", "Kurfürstendamm 123", "Berlin", "Berlin", "10067");
         publisherRepository.save(dtv);
-        System.out.println("Number of publishers: " + publisherRepository.count());
+        logger.info("Number of publishers: {}", publisherRepository.count());
 
         Author eric = new Author("Eric", "Evans");
         Book ddd = new Book("Domain Driven Design", "47110815");
@@ -53,7 +57,7 @@ public class BootstrapData implements CommandLineRunner {
         bookRepository.save(noEJB);
         publisherRepository.save(dtv);
 
-        System.out.println("Number of books: " + bookRepository.count());
-        System.out.println(("Publisher Number of Books: " + dtv.getBooks().size()));
+        logger.info("Number of books: {}", bookRepository.count());
+        logger.info("Publisher Number of Books: {}", bookRepository.count());
     }
 }
